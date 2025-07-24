@@ -63,7 +63,44 @@ tk.Scale(root, from_=0, to=1, resolution=0.01, orient=tk.HORIZONTAL, command=upd
 tk.Label(root, text="Release").pack()
 tk.Scale(root, from_=0.001, to=2, resolution=0.01, orient=tk.HORIZONTAL, command=update_release).pack()
 
-# --- Buttons ---
+# --- Note Map ---
+note_map = {
+    # White keys
+    'a': 261.63,  # C4
+    's': 293.66,  # D
+    'd': 329.63,  # E
+    'f': 349.23,  # F
+    'g': 392.00,  # G
+    'h': 440.00,  # A
+    'j': 493.88,  # B
+    'k': 523.25,  # C5
+
+    # Black keys
+    'w': 277.18,  # C#4
+    'e': 311.13,  # D#4
+    't': 369.99,  # F#4
+    'y': 415.30,  # G#4
+    'u': 466.16,  # A#4
+}
+
+
+# --- Key Handlers ---
+def key_press(event):
+    char = event.char.lower()
+    if char in note_map:
+        freq.value = note_map[char]
+        env.play()
+
+def key_release(event):
+    char = event.char.lower()
+    if char in note_map:
+        env.stop()
+
+# --- Bind Keyboard Events ---
+root.bind("<KeyPress>", key_press)
+root.bind("<KeyRelease>", key_release)
+
+# --- Buttons (optional) ---
 tk.Button(root, text="Play Note", command=play_note).pack()
 tk.Button(root, text="Release Note", command=release_note).pack()
 
